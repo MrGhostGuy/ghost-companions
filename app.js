@@ -4,7 +4,7 @@
 // --- Sound Effects (Web Audio API) ---
 const AudioCtx = window.AudioContext || window.webkitAudioContext;
 let audioCtx;
-function initAudio(){if(!audioCtx)audioCtx=new AudioCtx();}
+function initAudio(){if(!audioCtx)audioCtx=new AudioCtx();if(audioCtx.state==='suspended')audioCtx.resume();}
 function playTone(freq,dur,type='sine',vol=0.15){
   try{initAudio();const o=audioCtx.createOscillator(),g=audioCtx.createGain();
   o.type=type;o.frequency.value=freq;g.gain.value=vol;
@@ -84,7 +84,7 @@ const show=id=>{
 
 // --- Render Companions ---
 function renderCompanions(){
-  const grid=$('#companion-grid');grid.innerHTML='';
+  const grid=$('#companion-list');grid.innerHTML='';
   companions.forEach((c,i)=>{
     const card=document.createElement('div');
     card.className='companion-card';

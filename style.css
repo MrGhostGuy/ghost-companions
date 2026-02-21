@@ -60,3 +60,9 @@ h2{font-size:16px;color:#b388ff;margin-bottom:6px;text-align:center;}
 .close-btn{position:absolute;top:4px;right:4px;font-size:14px;}
 .screen-fade-enter{animation:screenIn 0.3s ease;}
 @keyframes screenIn{from{opacity:0;transform:scale(0.95)}to{opacity:1;transform:scale(1)}}
+.screen-header{display:flex;align-items:center;justify-content:space-between;width:100%;padding:0 4px;}
+.screen-header h2{margin:0;flex:1;}
+#settings-modal h3{color:#6e44ff;margin:0 0 8px 0;font-size:14px;text-align:center;}
+#settings-modal label{color:#b8b8b8;font-size:11px;display:block;margin:6px 0 3px 0;}
+#api-key-input{width:100%;box-sizing:border-box;padding:6px 8px;background:#0d0d0d;border:1px solid #6e44ff;border-radius:6px;color:#e0e0e0;font-size:11px;margin-bottom:8px;}
+#clear-chat-btn{font-size:14px;}

@@ -2,36 +2,41 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=240">
+  <meta name="viewport" content="width=240,height=282,initial-scale=1.0,maximum-scale=1.0,user-scalable=no">
   <title>Ghost Companions</title>
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'><text y='14' font-size='14'>&#x1F47B;</text></svg>" type="image/svg+xml">
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
   <div id="app">
     <div id="splash-screen" class="screen active">
-      <div class="ghost-icon">&#128123;</div>
-      <h1>Ghost<br>Companions</h1>
-      <p class="tagline">Your spectral friends await...</p>
-      <button id="splash-start-btn" class="btn-glow">Enter the Realm</button>
+      <div class="splash-content">
+        <div class="ghost-emoji">&#x1F47B;</div>
+        <h1>Ghost Companions</h1>
+        <p class="subtitle">Your spectral friends await...</p>
+        <button id="enter-btn" class="btn-glow">Enter the Realm</button>
+      </div>
     </div>
     <div id="name-screen" class="screen">
-      <div class="ghost-icon-small">&#128123;</div>
       <h2>Who dares enter?</h2>
       <input type="text" id="name-input" placeholder="Enter your name..." maxlength="20">
-      <button id="name-submit-btn" class="btn-glow" disabled>Summon Companions</button>
+      <button id="name-submit" class="btn-glow">Summon Companions</button>
+      <div id="pixel-ghost" class="pixel-art"></div>
     </div>
     <div id="select-screen" class="screen">
-      <h2 id="welcome-msg">Choose a Companion</h2>
+      <div class="screen-header">
+        <h2>Choose a Companion</h2>
+        <button id="settings-btn" class="btn-icon" title="Settings">&#9881;</button>
+      </div>
       <div id="companion-list" class="companion-list"></div>
     </div>
     <div id="chat-screen" class="screen">
       <div id="chat-header">
         <button id="back-btn" class="btn-icon">&#8592;</button>
-        <div id="chat-companion-info">
-          <span id="chat-companion-avatar"></span>
-          <span id="chat-companion-name"></span>
-        </div>
-        <button id="selfie-btn" class="btn-icon">&#128248;</button>
+        <span id="chat-companion-avatar"></span>
+        <span id="chat-companion-name"></span>
+        <button id="selfie-btn" class="btn-icon">&#128247;</button>
+        <button id="clear-chat-btn" class="btn-icon" title="Clear Chat">&#128465;</button>
       </div>
       <div id="chat-messages"></div>
       <div id="chat-input-area">
@@ -60,6 +65,15 @@
           <button id="selfie-generate" class="btn-glow btn-sm">Generate</button>
         </div>
         <button id="selfie-close" class="btn-icon close-btn">&#10005;</button>
+      </div>
+    </div>
+    <div id="settings-modal" class="modal hidden">
+      <div class="modal-content">
+        <h3>Settings</h3>
+        <label for="api-key-input">API Key</label>
+        <input type="password" id="api-key-input" placeholder="Enter OpenRouter API key...">
+        <button id="save-api-key" class="btn-glow btn-sm">Save Key</button>
+        <button id="settings-close" class="btn-icon close-btn">&#10005;</button>
       </div>
     </div>
   </div>
