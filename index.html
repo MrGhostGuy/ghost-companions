@@ -1,0 +1,68 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=240">
+  <title>Ghost Companions</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div id="app">
+    <div id="splash-screen" class="screen active">
+      <div class="ghost-icon">&#128123;</div>
+      <h1>Ghost<br>Companions</h1>
+      <p class="tagline">Your spectral friends await...</p>
+      <button id="splash-start-btn" class="btn-glow">Enter the Realm</button>
+    </div>
+    <div id="name-screen" class="screen">
+      <div class="ghost-icon-small">&#128123;</div>
+      <h2>Who dares enter?</h2>
+      <input type="text" id="name-input" placeholder="Enter your name..." maxlength="20">
+      <button id="name-submit-btn" class="btn-glow" disabled>Summon Companions</button>
+    </div>
+    <div id="select-screen" class="screen">
+      <h2 id="welcome-msg">Choose a Companion</h2>
+      <div id="companion-list" class="companion-list"></div>
+    </div>
+    <div id="chat-screen" class="screen">
+      <div id="chat-header">
+        <button id="back-btn" class="btn-icon">&#8592;</button>
+        <div id="chat-companion-info">
+          <span id="chat-companion-avatar"></span>
+          <span id="chat-companion-name"></span>
+        </div>
+        <button id="selfie-btn" class="btn-icon">&#128248;</button>
+      </div>
+      <div id="chat-messages"></div>
+      <div id="chat-input-area">
+        <input type="text" id="chat-input" placeholder="Say something...">
+        <button id="send-btn" class="btn-icon">&#10148;</button>
+      </div>
+    </div>
+    <div id="selfie-modal" class="modal hidden">
+      <div class="modal-content">
+        <div id="selfie-display"></div>
+        <div id="selfie-controls">
+          <select id="selfie-pose">
+            <option value="waving">Waving</option>
+            <option value="peace">Peace Sign</option>
+            <option value="thinking">Thinking</option>
+            <option value="laughing">Laughing</option>
+            <option value="mysterious">Mysterious</option>
+          </select>
+          <select id="selfie-env">
+            <option value="graveyard">Graveyard</option>
+            <option value="haunted-house">Haunted House</option>
+            <option value="forest">Dark Forest</option>
+            <option value="castle">Gothic Castle</option>
+            <option value="beach">Moonlit Beach</option>
+          </select>
+          <button id="selfie-generate" class="btn-glow btn-sm">Generate</button>
+        </div>
+        <button id="selfie-close" class="btn-icon close-btn">&#10005;</button>
+      </div>
+    </div>
+  </div>
+  <script src="app.js"></script>
+</body>
+</html>
