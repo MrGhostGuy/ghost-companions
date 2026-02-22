@@ -1,82 +1,97 @@
 ﻿<!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=240,height=282,initial-scale=1.0,maximum-scale=1.0,user-scalable=no">
-  <title>Ghost Companions</title>
-  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'><text y='14' font-size='14'>&#x1F47B;</text></svg>" type="image/svg+xml">
-  <link rel="stylesheet" href="style.css">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable=no">
+<title>Ghost Companions</title>
+<link rel="stylesheet" href="style.css">
 </head>
 <body>
-  <div id="app">
-    <div id="splash-screen" class="screen active">
-      <div class="splash-content">
-        <div class="ghost-emoji">&#x1F47B;</div>
-        <h1>Ghost Companions</h1>
-        <p class="subtitle">Your spectral friends await...</p>
-        <button id="enter-btn" class="btn-glow">Enter the Realm</button>
-      </div>
-    </div>
-    <div id="name-screen" class="screen">
-      <h2>Who dares enter?</h2>
-      <input type="text" id="name-input" placeholder="Enter your name..." maxlength="20">
-      <button id="name-submit" class="btn-glow">Summon Companions</button>
-      <div id="pixel-ghost" class="pixel-art"></div>
-    </div>
-    <div id="select-screen" class="screen">
-      <div class="screen-header">
-        <h2>Choose a Companion</h2>
-        <button id="settings-btn" class="btn-icon" title="Settings">&#9881;</button>
-      </div>
-      <div id="companion-list" class="companion-list"></div>
-    </div>
-    <div id="chat-screen" class="screen">
-      <div id="chat-header">
-        <button id="back-btn" class="btn-icon">&#8592;</button>
-        <span id="chat-companion-avatar"></span>
-        <span id="chat-companion-name"></span>
-        <button id="selfie-btn" class="btn-icon">&#128247;</button>
-        <button id="clear-chat-btn" class="btn-icon" title="Clear Chat">&#128465;</button>
-      </div>
-      <div id="chat-messages"></div>
-      <div id="chat-input-area">
-        <input type="text" id="chat-input" placeholder="Say something...">
-        <button id="send-btn" class="btn-icon">&#10148;</button>
-      </div>
-    </div>
-    <div id="selfie-modal" class="modal hidden">
-      <div class="modal-content">
-        <div id="selfie-display"></div>
-        <div id="selfie-controls">
-          <select id="selfie-pose">
-            <option value="waving">Waving</option>
-            <option value="peace">Peace Sign</option>
-            <option value="thinking">Thinking</option>
-            <option value="laughing">Laughing</option>
-            <option value="mysterious">Mysterious</option>
-          </select>
-          <select id="selfie-env">
-            <option value="graveyard">Graveyard</option>
-            <option value="haunted-house">Haunted House</option>
-            <option value="forest">Dark Forest</option>
-            <option value="castle">Gothic Castle</option>
-            <option value="beach">Moonlit Beach</option>
-          </select>
-          <button id="selfie-generate" class="btn-glow btn-sm">Generate</button>
-        </div>
-        <button id="selfie-close" class="btn-icon close-btn">&#10005;</button>
-      </div>
-    </div>
-    <div id="settings-modal" class="modal hidden">
-      <div class="modal-content">
-        <h3>Settings</h3>
-        <label for="api-key-input">API Key</label>
-        <input type="password" id="api-key-input" placeholder="Enter OpenRouter API key...">
-        <button id="save-api-key" class="btn-glow btn-sm">Save Key</button>
-        <button id="settings-close" class="btn-icon close-btn">&#10005;</button>
-      </div>
+<div id="particles-container"></div>
+<div id="toast-container"></div>
+
+<div id="splash-screen" class="screen active">
+  <div class="splash-content">
+    <div class="ghost-emoji floating">&#128123;</div>
+    <h1>Ghost Companions</h1>
+    <p class="subtitle">Your spectral friends await...</p>
+    <button id="enter-btn" class="btn-glow pulse">Enter the Realm</button>
+  </div>
+</div>
+
+<div id="name-screen" class="screen">
+  <div class="screen-content">
+    <h2>&#128123; Who dares enter?</h2>
+    <p class="subtitle">Tell us your name, mortal...</p>
+    <input type="text" id="name-input" placeholder="Enter your name..." maxlength="20" autocomplete="off">
+    <button id="name-submit" class="btn-glow">Summon Companions</button>
+  </div>
+</div>
+
+<div id="select-screen" class="screen">
+  <div class="screen-content">
+    <h2>Choose Your Companion</h2>
+    <p class="subtitle" id="welcome-msg">Select a ghost to chat with</p>
+    <div id="companion-grid" class="companion-grid"></div>
+    <div class="select-actions">
+      <button id="settings-btn" class="btn-small">&#9881; Settings</button>
     </div>
   </div>
-  <script src="app.js"></script>
+</div>
+
+<div id="chat-screen" class="screen">
+  <div class="chat-header">
+    <button id="back-btn" class="btn-icon">&#9664;</button>
+    <div class="chat-companion-info">
+      <span id="chat-emoji" class="chat-header-emoji"></span>
+      <span id="chat-name"></span>
+      <span id="mood-indicator" class="mood-dot"></span>
+    </div>
+    <button id="clear-chat-btn" class="btn-icon" title="Clear Chat">&#128465;</button>
+  </div>
+  <div id="chat-messages" class="chat-messages"></div>
+  <div id="typing-indicator" class="typing-indicator hidden">
+    <span class="dot"></span><span class="dot"></span><span class="dot"></span>
+  </div>
+  <div class="chat-input-area">
+    <input type="text" id="chat-input" placeholder="Type a message..." autocomplete="off">
+    <button id="send-btn" class="btn-send">&#9654;</button>
+  </div>
+</div>
+
+<div id="settings-screen" class="screen">
+  <div class="screen-content">
+    <h2>&#9881; Settings</h2>
+    <div class="setting-group">
+      <label>Theme</label>
+      <select id="theme-select">
+        <option value="dark">Dark Realm</option>
+        <option value="purple">Purple Haze</option>
+        <option value="midnight">Midnight Blue</option>
+        <option value="blood">Blood Moon</option>
+      </select>
+    </div>
+    <div class="setting-group">
+      <label>Sound Effects</label>
+      <label class="toggle"><input type="checkbox" id="sound-toggle" checked><span class="slider"></span></label>
+    </div>
+    <div class="setting-group">
+      <label>Particles</label>
+      <label class="toggle"><input type="checkbox" id="particles-toggle" checked><span class="slider"></span></label>
+    </div>
+    <div class="setting-group">
+      <label>Your Name</label>
+      <input type="text" id="settings-name" placeholder="Change name..." maxlength="20">
+    </div>
+    <button id="save-settings-btn" class="btn-glow">Save Settings</button>
+    <button id="back-settings-btn" class="btn-small">Back</button>
+  </div>
+</div>
+
+<div id="loading-overlay" class="hidden">
+  <div class="spinner"></div>
+</div>
+
+<script src="app.js"></script>
 </body>
 </html>
