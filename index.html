@@ -92,6 +92,22 @@
   <div class="spinner"></div>
 </div>
 
-<script src="app.js"></script>
+
+  <div id="settings-modal" class="modal-overlay">
+    <div class="modal-content">
+      <h2>Settings</h2>
+      <div class="setting-group">
+        <label for="api-key-input">OpenRouter API Key (optional)</label>
+        <p class="setting-desc">Enter your OpenRouter API key for AI-powered responses. Leave blank for local responses.</p>
+        <input type="password" id="api-key-input" placeholder="sk-or-v1-..." class="setting-input">
+      </div>
+      <div class="modal-buttons">
+        <button id="save-api-key" class="btn-glow">Save Key</button>
+        <button id="close-settings" class="btn-small">Close</button>
+      </div>
+    </div>
+  </div>
+
+  <script src="app.js"></script>
 </body>
 </html>

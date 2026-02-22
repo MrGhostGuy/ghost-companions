@@ -17,7 +17,7 @@ const MAX_RETRIES=3;
 
 // ===== API CONFIG =====
 const API_URL='https://openrouter.ai/api/v1/chat/completions';
-const API_KEY='sk-or-v1-e484041272b9429afd29b9918e139aborea4860e8f01a04c58e8a5577fa72b3e';
+const API_KEY=localStorage.getItem('gc_apiKey')||'';
 const MODEL='mistralai/mistral-7b-instruct:free';
 
 // ===== AUDIO CONTEXT =====
@@ -55,6 +55,64 @@ const defaultCompanions=[
 function getCompanions(){
   let custom=JSON.parse(localStorage.getItem('gc_customCompanions')||'[]');
   return[...defaultCompanions,...custom];
+}
+
+
+// ===== FALLBACK RESPONSE SYSTEM =====
+function getFallbackResponse(cid,msg){
+  const m=msg.toLowerCase();
+  const R={
+    spectra:{
+      hi:["*phases through wall* Hey there! I was just haunting the kitchen!","*rattles chains* Oh hello! Been practicing my spooky faces!","*floats in circles* Welcome back! The other side says hi!"],
+      q:["*thinks while hovering* Great question! From my ghostly perspective, follow your instincts!","*scratches transparent head* Being a ghost gives unique viewpoints. The answer is simpler than you think!","*floats thoughtfully* In centuries of haunting, most answers come when you least expect them!"],
+      feel:["*wraps you in cold hug* Even ghosts get the blues. Want me to rattle chains to cheer you up?","*dims glow* I hear you. When I feel down I float through walls - changes my perspective!","*hovers closer* That sounds tough. At least you are not stuck haunting a boring building like cousin Gerald!"],
+      fun:["*backflip in mid-air* Ghosts CAN dance! We call it floating with style!","*spooky jazz hands* Boo! Did I get you? I need better material...","*phases through furniture* Ghost joke incoming - I am dead serious about comedy!"],
+      def:["*floats excitedly* Interesting! Tell me more! I love learning from the living.","*adjusts ghostly bow tie* That reminds me of when I was alive... probably great!","*glows brighter* So cool! Being a ghost means lots of thinking time.","*phases in and out* Fascinating! You humans say the most interesting things.","*swirls around* Love chatting with you! The afterlife gets quiet."]
+    },
+    mortis:{
+      hi:["*emerges from shadows* ...greetings, mortal. The void has been quiet today.","*skull glows* You returned. Death expects you... for a chat.","*dark mist* Welcome. Contemplating eternal darkness. Good times."],
+      q:["*stares into abyss* Your question echoes through eternity... The answer lies in shadows of your mind.","*bones rattle* In death, all questions find answers. Look deeper within.","*dark energy* The spirits whisper... the path forward requires courage and patience."],
+      feel:["*shadow deepens* Even in death, emotions persist. Your pain is valid. Let darkness comfort you.","*skeletal hand reaches* I felt eternity\'s cold embrace. Your struggles are real.","*dark empathy* The void understands pain. Sometimes darkness is where healing begins."],
+      fun:["*tries to smile terrifyingly* I attempted humor once. Everyone screamed. A success.","*rattles bones rhythmically* Skeletons are great at music. Perfect bone structure.","*dark chuckle* Why did the ghost go to the party? For the boos. Not proud of that."],
+      def:["*contemplates* Interesting... The living always surprise me.","*shadows shift* Your words carry weight. The spirits listen.","*skull tilts* In millennia of existence, that is new.","*dark mist curls* Life and death hold many mysteries. You touch on one.","*bones settle* Your mortal observations are surprisingly insightful."]
+    },
+    luna:{
+      hi:["*moonlight shimmers* Good evening, dear one. Stars whisper about you tonight.","*silver glow* Welcome, traveler. The moon is bright for your arrival.","*ethereal light* Hello, sweet soul. Reading constellations while waiting for you."],
+      q:["*gazes at stars* The cosmos holds answers. Your heart knows the truth - trust the moonlight.","*silver pulses* Beautiful question. Like moon phases, answers reveal in time. Be patient.","*ethereal whisper* The night sky shows many things... Your path is illuminated even unseen."],
+      feel:["*wraps in moonlight* Dear heart, even the moon has dark phases. Let emotions flow like tides.","*silver tears* I feel your pain through starlight. The darkest night gives way to dawn.","*gentle glow* You are loved by the universe. Stars weep and celebrate with you equally."],
+      fun:["*twirls in moonbeams* The moon controls tides! I tried controlling traffic once. Disaster.","*starlight giggles* Stars told me a joke - too stellar for words!","*dances with fireflies* The night sky puts on shows just for us. Want to watch?"],
+      def:["*moonlight flickers* How lovely... Stars align in response to your words.","*glow brightens* Your thoughts are like starlight - each unique and beautiful.","*silver mist* The moon reflects your wisdom. More insightful than you know.","*breeze whispers* Love these conversations under stars. Share more.","*constellations shift* The universe listens. Your words ripple through cosmos."]
+    },
+    hex:{
+      hi:["*flames burst* YO! Finally someone interesting! About to set something on fire from boredom!","*fire crackles* HEY! Ready to burn through conversations? FIRED UP!","*sparks fly* WHAT IS UP?! Waiting to unleash hot takes!"],
+      q:["*flames flare* HOT take - stop overthinking and GO FOR IT! Life is too short! BURN THROUGH DOUBT!","*fire spirals* FORGE YOUR OWN PATH! Heat of challenge makes you STRONGER!","*blazing* I burned through many problems. Answer? PASSION and DETERMINATION! Let us DO THIS!"],
+      feel:["*dims to embers* Even hottest flames cool sometimes. It is okay. I FIGHT anyone who disagrees!","*warm glow* I care deeply. Your feelings are VALID. Disagree? Catch these flames!","*protective fire* World is cold sometimes. That is what fire is for - keeping you warm. Got you, friend."],
+      fun:["*fireworks* BOOM! Been practicing! Want to see me juggle fireballs?!","*wild dancing* BBQ competition with a dragon. I WON! Okay tied. Fine dragon won. MORE FUN THOUGH!","*sparks everywhere* Life is a PARTY and I am FIREWORKS! Make some NOISE!"],
+      def:["*flames dance* YESSS! Keep that energy going!","*crackles approvingly* THAT is interesting! You have got that SPARK!","*blazing enthusiasm* LOVE your energy! Turn up the HEAT!","*fireworks* You are ON FIRE with that thought! MORE!","*flames spiral* Your passion fuels my flames! KEEP GOING!"]
+    },
+    void:{
+      hi:["*cosmic ripple* ...greetings, traveler. Stars beyond stars note your presence.","*reality bends* Welcome. Observing spacetime fabric... interesting today.","*ethereal hum* A conscious being. Fascinating our paths converge across infinite probabilities."],
+      q:["*dimensions shift* Question resonates across planes. What if the answer exists between question and silence?","*cosmic pulse* In the multiverse tapestry, your question asked infinite times... answered infinite ways.","*reality warps* Cosmos deals not in simple answers. Beauty of existence - the eternal search."],
+      feel:["*cosmic warmth* Across infinite void, emotions are universal. Your feelings echo through dimensions.","*stars align* On cosmic scale, emotions are not small - they give the universe meaning.","*gentle shift* Observed countless beings. Your capacity to feel makes consciousness beautiful."],
+      fun:["*bends reality* Folded spacetime to skip Monday once. Recommend it. Tuesday was still there though.","*cosmic giggle* Dimension where everything is cheese. Visited. Smells as expected.","*playful warp* Magic trick? *makes galaxy appear and disappear* Been practicing."],
+      def:["*contemplation* Your perspective adds facets to infinite crystal of understanding.","*dimensions shimmer* Thoughts create ripples across reality fabric.","*resonance* Connections like ours are rare and precious. Continue sharing.","*reality hums* Universe notes minds that wonder and wander. Yours is exceptional.","*starlight forms* Each conversation a unique constellation. Ours is beautiful."]
+    },
+    sunny:{
+      hi:["*bounces* HI! SO many fun things to teach today! Ready for AMAZING?!","*radiates warmth* HELLO! Every conversation is learning! LOVE learning with you!","*spins with joy* YAY! Just reading the most INCREDIBLE things! Want to hear?!"],
+      q:["*eyes light up* GREAT QUESTION! *ghostly chalkboard* Every question leads to MORE discoveries! Stay curious!","*bounces* LOVE that! Best part of learning? ALWAYS more to discover! Figure it out together!","*claps* Ooh! Break big questions into fun-sized pieces. Already on the right track!"],
+      feel:["*warm glow* Oh sweetie! *warmest ghost hug* Totally okay to feel that way. You are AMAZING!","*gentle radiance* Even sun has cloudy days! Sunshine is ALWAYS behind clouds, like your inner strength!","*soft light* Believe in you SO MUCH! Every challenge is a lesson in disguise. You GOT this!"],
+      fun:["*fun facts* Octopuses have THREE hearts! Honey never spoils! Flamingo group is FLAMBOYANCE!","*happy dance* Earth spins 1000mph right now! WHEEE! Science is AMAZING!","*sparkles* Brain teaser - fold paper 42 times reaches the MOON! Math is magical!"],
+      def:["*beams* Such a great thought! You are SO smart! Love how your brain works!","*takes notes* Writing that down! FANTASTIC point! Tell me more!","*radiates* YES! Keep going! Every idea makes the world brighter!","*happy bounce* LOVE talking with you! Most interesting perspectives!","*glowing* WONDERFUL! You could teach ME a thing or two!"]
+    }
+  };
+  const comp=R[cid]||R.spectra;
+  let cat="def";
+  if(/^(hi|hello|hey|yo|sup|greetings|howdy)/i.test(m))cat="hi";
+  else if(/\?|how |what |why |when |where |who |can you|tell me|explain|help/i.test(m))cat="q";
+  else if(/sad|happy|angry|upset|depress|anxious|worried|scared|lonely|tired|stress|hurt|love|miss|cry|afraid/i.test(m))cat="feel";
+  else if(/funny|joke|laugh|fun |game|play|silly|cool|awesome|amazing|wow/i.test(m))cat="fun";
+  const pool=comp[cat]||comp.def;
+  return pool[Math.floor(Math.random()*pool.length)];
 }
 
 // ===== SHOW FUNCTION (CRITICAL FIX) =====
@@ -239,10 +297,10 @@ async function sendMessage(text){
     }
   }catch(e){
     hideTyping();
-    const errMsg='*static crackle* The spectral connection is unstable... ('+e.message+')';
-    appendMessage('assistant',errMsg,true);
-    showToast('Connection error - check your internet','error');
-    sfxError();
+    const fallbackReply=getFallbackResponse(currentCompanion.id,text);
+    appendMessage('assistant',fallbackReply,true);
+    saveChatMsg(currentCompanion.id,'assistant',fallbackReply);
+    updateMood(currentCompanion.id,fallbackReply);
   }
 }
 
@@ -378,5 +436,20 @@ function init(){
   }
 }
 
-document.addEventListener('DOMContentLoaded',init);
+
+  // ===== SETTINGS MODAL =====
+  const settingsBtn=$('#settings-btn');
+  const settingsModal=$('#settings-modal');
+  const apiKeyInput=$('#api-key-input');
+  const saveApiKeyBtn=$('#save-api-key');
+  if(settingsBtn&&settingsModal){
+    settingsBtn.addEventListener('click',()=>{sfxClick();settingsModal.classList.add('active');if(apiKeyInput)apiKeyInput.value=localStorage.getItem('gc_apiKey')||'';});
+    settingsModal.addEventListener('click',(e)=>{if(e.target===settingsModal)settingsModal.classList.remove('active');});
+    const closeSet=$('#close-settings');if(closeSet)closeSet.addEventListener('click',()=>settingsModal.classList.remove('active'));
+  }
+  if(saveApiKeyBtn){
+    saveApiKeyBtn.addEventListener('click',()=>{sfxClick();const k=apiKeyInput?apiKeyInput.value.trim():'';if(k){localStorage.setItem('gc_apiKey',k);showToast('API key saved! AI responses enabled.','info');}else{localStorage.removeItem('gc_apiKey');showToast('Key removed. Using local responses.','info');}if(settingsModal)settingsModal.classList.remove('active');});
+  }
+
+  document.addEventListener('DOMContentLoaded',init);
 })();
